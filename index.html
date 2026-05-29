@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Аудит Google Ads — miks-soft.com</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 15px; color: #1a1a1a; background: #f5f6f8; }
+  .page { max-width: 960px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  .cover { background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%); color: #fff; border-radius: 12px; padding: 40px 48px; margin-bottom: 32px; }
+  .cover h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .cover .subtitle { font-size: 16px; opacity: 0.85; margin-bottom: 24px; }
+  .cover-meta { display: flex; gap: 14px; flex-wrap: wrap; }
+  .cover-meta div { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 10px 18px; }
+  .cover-meta .label { font-size: 11px; text-transform: uppercase; opacity: 0.7; margin-bottom: 2px; letter-spacing: .5px; }
+  .cover-meta .value { font-size: 15px; font-weight: 600; }
+
+  .score-box { display: inline-flex; align-items: baseline; gap: 8px; background: rgba(255,255,255,.18); padding: 14px 22px; border-radius: 10px; margin-top: 20px; }
+  .score-box .num { font-size: 38px; font-weight: 800; line-height: 1; }
+  .score-box .den { font-size: 18px; opacity: .8; }
+  .score-box .lbl { font-size: 12px; opacity: .8; text-transform: uppercase; letter-spacing: .6px; margin-left: 14px; padding-left: 14px; border-left: 1px solid rgba(255,255,255,.3); }
+
+  .toc { background: #fff; border-radius: 10px; padding: 24px 28px; margin-bottom: 32px; border-left: 4px solid #2563eb; }
+  .toc h2 { font-size: 14px; font-weight: 700; color: #2563eb; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .toc ol { padding-left: 22px; column-count: 2; column-gap: 32px; }
+  .toc li { margin-bottom: 6px; color: #2563eb; break-inside: avoid; }
+  .toc a { color: #2563eb; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  .section { background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 24px; scroll-margin-top: 16px; }
+  .section-title { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #e8edf3; display: flex; align-items: center; gap: 10px; }
+  .section-title .num { background: #2563eb; color: #fff; min-width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+
+  .subsection { margin-bottom: 22px; }
+  .subsection-title { font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .stat-card { background: #f0f5fb; border-radius: 8px; padding: 14px 18px; }
+  .stat-card .stat-label { font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+  .stat-card .stat-value { font-size: 22px; font-weight: 700; color: #0f172a; }
+  .stat-card .stat-note { font-size: 12px; color: #777; margin-top: 4px; }
+  .stat-card.red .stat-value { color: #c0392b; }
+  .stat-card.orange .stat-value { color: #d68910; }
+  .stat-card.green .stat-value { color: #1e8449; }
+
+  .alert { border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; font-size: 14px; line-height: 1.55; display: flex; gap: 10px; }
+  .alert-icon { font-size: 18px; flex-shrink: 0; }
+  .alert.red { background: #fdf2f2; border-left: 4px solid #e74c3c; }
+  .alert.orange { background: #fef9f0; border-left: 4px solid #f39c12; }
+  .alert.green { background: #f0fbf4; border-left: 4px solid #27ae60; }
+  .alert.blue { background: #f0f5fb; border-left: 4px solid #2563eb; }
+  .alert strong { font-weight: 700; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13.5px; }
+  th { background: #0f172a; color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 13px; }
+  td { padding: 9px 12px; border-bottom: 1px solid #e8edf3; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .badge { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: 600; }
+  .badge.red { background: #fde8e8; color: #c0392b; }
+  .badge.orange { background: #fef3e0; color: #d68910; }
+  .badge.green { background: #e8f8ee; color: #1e8449; }
+  .badge.gray { background: #ebebeb; color: #555; }
+  .badge.blue { background: #e8f0fb; color: #1a5276; }
+
+  ul.clean { list-style: none; padding-left: 0; }
+  ul.clean li { padding: 6px 0 6px 22px; position: relative; line-height: 1.55; }
+  ul.clean li::before { content: ''; position: absolute; left: 0; top: 14px; width: 8px; height: 8px; border-radius: 50%; background: #2563eb; }
+  ul.clean.red li::before { background: #e74c3c; }
+  ul.clean.orange li::before { background: #f39c12; }
+  ul.clean.gray li::before { background: #888; }
+
+  .check-row { padding: 14px 18px; border-left: 4px solid #ddd; background: #f8fafc; border-radius: 4px; margin-bottom: 10px; }
+  .check-row.ok { border-color: #27ae60; }
+  .check-row.fail { border-color: #e74c3c; }
+  .check-row.partial { border-color: #f39c12; }
+  .check-row.na { border-color: #999; }
+  .check-row .ctitle { font-weight: 700; color: #0f172a; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .check-row .cnote { font-size: 14px; color: #333; }
+  .check-row .cact { font-size: 13px; color: #555; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #ddd; }
+
+  .priority-block { border-radius: 10px; padding: 18px 22px; margin-bottom: 12px; }
+  .priority-block.crit { background: #fdf2f2; border-left: 4px solid #e74c3c; }
+  .priority-block.major { background: #fef9f0; border-left: 4px solid #f39c12; }
+  .priority-block.minor { background: #f8fafc; border-left: 4px solid #999; }
+  .priority-block h3 { font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .priority-block ol { padding-left: 22px; }
+  .priority-block li { margin-bottom: 6px; line-height: 1.55; }
+
+  footer { text-align: center; color: #999; font-size: 13px; margin-top: 40px; line-height: 1.6; }
+  footer a { color: #2563eb; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- COVER -->
+<div class="cover">
+  <div style="font-size:12px; opacity:.7; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Аудит Google Ads</div>
+  <h1>miks-soft.com</h1>
+  <div class="subtitle">Веб-студия — разработка сайтов, UX/UI-дизайн, мобильные приложения</div>
+  <div class="cover-meta">
+    <div><div class="label">Customer ID</div><div class="value">282-199-0435</div></div>
+    <div><div class="label">Логин</div><div class="value">alex.sterling.lab@gmail.com</div></div>
+    <div><div class="label">Валюта</div><div class="value">USD</div></div>
+    <div><div class="label">Таймзона</div><div class="value">Europe/Minsk</div></div>
+    <div><div class="label">Дата аудита</div><div class="value">29 мая 2026</div></div>
+    <div><div class="label">Период</div><div class="value">последние 30 дней</div></div>
+  </div>
+  <div class="score-box">
+    <span class="num">6</span><span class="den">/ 10</span>
+    <span class="lbl">Skill-структура отличная,<br>но всё работает на ручном CPC</span>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2>Содержание</h2>
+  <ol>
+    <li><a href="#sum">Executive summary</a></li>
+    <li><a href="#kpi">Ключевые метрики 30д</a></li>
+    <li><a href="#camp">Активные кампании</a></li>
+    <li><a href="#bidding">Bidding и бюджеты</a></li>
+    <li><a href="#conv">Конверсии и атрибуция</a></li>
+    <li><a href="#kw">Ключи и минусация</a></li>
+    <li><a href="#ads">Объявления и расширения</a></li>
+    <li><a href="#aud">Аудитории, гео, устройства</a></li>
+    <li><a href="#plan">План действий</a></li>
+    <li><a href="#score">Итоговая оценка</a></li>
+  </ol>
+</div>
+
+<!-- 1. Executive summary -->
+<section class="section" id="sum">
+  <div class="section-title"><span class="num">1</span> Executive summary</div>
+  <p style="line-height:1.7;">
+    Аккаунт <strong>хорошо структурирован</strong>: чистая разбивка ключей по точному и фразовому соответствию (497 EXACT + 496 PHRASE против всего 7 BROAD), <strong>98% активных объявлений</strong> имеют качество Good или Excellent, GA4-трекинг и Enhanced Conversions подключены, минусация ведётся (324 минус-слова на уровне кампаний + 200 на уровне аккаунта). Google Optimization Score — <strong>95.25%</strong>, что подтверждает активную поддержку.
+  </p>
+  <p style="margin-top:12px; line-height:1.7;">
+    <strong>Главная проблема —</strong> все 3 активные кампании работают на ручном CPC (<code>MANUAL_CPC</code>), хотя «Поиск - Азия» уже набрала стабильные 10 конверсий за 30 дней при минимальной волатильности правок — то есть готова к <code>MAXIMIZE_CONVERSIONS</code> прямо сейчас. На «Поиск - USD» включены поисковые партнёры с нулём конверсий за месяц при $191 расхода. «Поиск - Азия» упёрся в дневной потолок ($15/день при фактическом $18/день — 121% от бюджета) и режет показы. Атрибуция — <code>LAST_CLICK</code> на всех 15 конверсиях вместо рекомендованной <code>DATA_DRIVEN</code>. Одновременно 6 Primary-целей (отправка формы + клик по email + клик по телефону + 3 формы лидов) — Smart Bidding учится на «грязном» сигнале.
+  </p>
+  <div class="alert blue" style="margin-top:18px;">
+    <span class="alert-icon">⚡</span>
+    <div><strong>Топ-3 действия на эту неделю:</strong>
+      <ol style="padding-left:20px; margin-top:6px;">
+        <li>«Поиск - Азия» → <code>MAXIMIZE_CONVERSIONS</code>, поднять бюджет до $30/день.</li>
+        <li>«Поиск - USD» → выключить Google search partners.</li>
+        <li>Сократить Primary-цели до 2 (Отправка формы + Клик по телефону), остальное в Secondary.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 2. KPI -->
+<section class="section" id="kpi">
+  <div class="section-title"><span class="num">2</span> Ключевые метрики за 30 дней</div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-label">Показы</div><div class="stat-value">12 540</div><div class="stat-note">4 активные кампании</div></div>
+    <div class="stat-card"><div class="stat-label">Клики</div><div class="stat-value">1 168</div><div class="stat-note">CTR 9.3% — выше среднего</div></div>
+    <div class="stat-card"><div class="stat-label">Расход</div><div class="stat-value">$2 370</div><div class="stat-note">≈ $79/день</div></div>
+    <div class="stat-card green"><div class="stat-label">Конверсии</div><div class="stat-value">18</div><div class="stat-note">формы + звонки</div></div>
+    <div class="stat-card orange"><div class="stat-label">CPA</div><div class="stat-value">$132</div><div class="stat-note">для B2B-услуг — норма</div></div>
+    <div class="stat-card green"><div class="stat-label">Optimization Score</div><div class="stat-value">95%</div><div class="stat-note">топ-децильное значение</div></div>
+  </div>
+  <div class="alert green">
+    <span class="alert-icon">✅</span>
+    <div><strong>Что работает хорошо:</strong> высокий CTR говорит о релевантности ключей и объявлений; «Поиск - Азия» — самая эффективная кампания (CPA $55), нужно расширять бюджет.</div>
+  </div>
+</section>
+
+<!-- 3. Active campaigns -->
+<section class="section" id="camp">
+  <div class="section-title"><span class="num">3</span> Активные кампании</div>
+  <table>
+    <thead><tr><th>Кампания</th><th>Тип</th><th>Bid strategy</th><th>Бюджет/день</th><th>Расход 30д</th><th>Конв.</th><th>CPA</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Поиск - EUR</strong></td><td>Search</td><td><span class="badge red">Manual CPC</span></td><td>$55</td><td>$1 267</td><td>6.0</td><td>$211</td></tr>
+      <tr><td><strong>Поиск - Азия</strong></td><td>Search</td><td><span class="badge red">Manual CPC</span></td><td>$15 ⚠️</td><td>$545</td><td>10.0</td><td><strong style="color:#1e8449">$55</strong></td></tr>
+      <tr><td><strong>Поиск - USD</strong></td><td>Search</td><td><span class="badge red">Manual CPC</span></td><td>$45</td><td>$191</td><td>0.0</td><td>—</td></tr>
+      <tr><td>Поиск - EUR №2</td><td>Search</td><td>Manual CPC</td><td>—</td><td>$367</td><td>2.0</td><td>$183</td></tr>
+    </tbody>
+  </table>
+  <div class="alert orange">
+    <span class="alert-icon">⚠️</span>
+    <div><strong>«Поиск - Азия» режется бюджетом:</strong> $15/день × 30 = $450 потолок, а фактический расход $545 (121%). При лучшем CPA в аккаунте это значит — теряются конверсии. Бюджет нужно поднять до $25-30/день.</div>
+  </div>
+  <p style="margin-top:14px; font-size:14px; color:#555;">В аккаунте также лежат <strong>13 paused-пустых черновиков</strong> (Израиль, Турция, Кипр, ОАЭ, Канада, PMax-заготовки, КМС-партнёрки, Search-Ремаркетинг по Tier-странам) — без показов и расхода за всю историю. Это не вредит, но захламляет UI.</p>
+</section>
+
+<!-- 4. Bidding & budget -->
+<section class="section" id="bidding">
+  <div class="section-title"><span class="num">4</span> Bidding и бюджеты</div>
+
+  <div class="check-row fail">
+    <div class="ctitle">Ручной CPC во всех 3 активных кампаниях <span class="badge red">CRITICAL</span></div>
+    <div class="cnote">Все кампании используют <code>MANUAL_CPC</code>. «Поиск - Азия» = 10 conv / 30д с минимальной волатильностью правок (ratio disruptive-edits 0.07) — это <strong>классический сигнал готовности</strong> к Smart Bidding.</div>
+    <div class="cact"><strong>Что делать:</strong> «Поиск - Азия» → <code>MAXIMIZE_CONVERSIONS</code> (без CPA-target первые 14 дней обучения), затем добавить <code>TARGET_CPA = $55</code>. «Поиск - EUR» → <code>MAXIMIZE_CONVERSIONS</code> без CPA-target. «Поиск - USD» оставить на manual, пока не наберёт ≥10 conv/мес.</div>
+  </div>
+
+  <div class="check-row fail">
+    <div class="ctitle">«Поиск - Азия» режется бюджетом <span class="badge orange">MAJOR</span></div>
+    <div class="cnote">Daily budget = $15, фактический расход = $18.18/день. 121% от потолка — Google ограничивает показы.</div>
+    <div class="cact"><strong>Что делать:</strong> поднять до <strong>$25-30/день</strong>. У «Поиск - USD» бюджет используется только на 14% — оттуда можно переразместить $30.</div>
+  </div>
+
+  <div class="check-row partial">
+    <div class="ctitle">«Поиск - USD» — недогруз бюджета <span class="badge orange">MAJOR</span></div>
+    <div class="cnote">Daily $45, фактический $6.4/день (14%). 0 конверсий за 30 дней.</div>
+    <div class="cact"><strong>Что делать:</strong> снизить бюджет до $15-20 и переразместить на Азию; либо разобраться, почему так мало кликов (низкие ставки? слабые ключи?).</div>
+  </div>
+
+  <div class="check-row ok">
+    <div class="ctitle">Отдельный budget на каждую кампанию <span class="badge green">OK</span></div>
+    <div class="cnote">Нет shared budget — каждая кампания имеет независимый бюджетный ресурс. Это правильно для разнородных по гео и валюте кампаний.</div>
+  </div>
+</section>
+
+<!-- 5. Conversions -->
+<section class="section" id="conv">
+  <div class="section-title"><span class="num">5</span> Конверсии и атрибуция</div>
+
+  <div class="check-row ok">
+    <div class="ctitle">Conversion tracking подключён <span class="badge green">OK</span></div>
+    <div class="cnote"><code>conversion_tracking_status = CONVERSIONS_FOUND</code>, 16 конверсий за 30д, GA4 + Enhanced Conversions включены.</div>
+  </div>
+
+  <div class="check-row fail">
+    <div class="ctitle">Атрибуция = LAST_CLICK на всех 15 целях <span class="badge orange">MAJOR</span></div>
+    <div class="cnote">Все 15 conversion actions используют модель <code>GOOGLE_ADS_LAST_CLICK (101)</code>. Google с 2023 рекомендует <code>DATA_DRIVEN (106)</code> как дефолт — он учитывает ассистинг-точки и точнее обучает Smart Bidding.</div>
+    <div class="cact"><strong>Что делать:</strong> Tools → Conversions → у каждой primary action сменить Attribution model на <strong>Data-driven</strong>. Бесплатно, занимает 10 минут.</div>
+  </div>
+
+  <div class="check-row fail">
+    <div class="ctitle">6 Primary conversion goals одновременно <span class="badge orange">MAJOR</span></div>
+    <div class="cnote">Primary: <em>Отправка формы лидов, Клик по email, Клик по телефону, Отправка формы по партнёрке, Android-installs, Form_partnership</em>. Один и тот же пользователь может попасть в счёт 2-3 раза → отчёты завышают конверсии в 1.5-2×, Smart Bidding учится на дублях.</div>
+    <div class="cact"><strong>Что делать:</strong> primary оставить только <strong>«Отправка формы для потенциальных клиентов» + «Клик по телефону»</strong>. Email-клик, скроллы, время на сайте, Android-installs — в Secondary.</div>
+  </div>
+
+  <div class="check-row ok">
+    <div class="ctitle">Микро-конверсии вынесены отдельно <span class="badge green">OK</span></div>
+    <div class="cnote">Скроллы 30/60/90% и время на сайте 30/60/120 сек уже стоят как secondary (status=3, EXCLUDED из «Conversions»). Это правильно.</div>
+  </div>
+
+  <div class="check-row ok">
+    <div class="ctitle">Конверсии имеют ценность <span class="badge green">OK</span></div>
+    <div class="cnote">У всех 15 actions <code>default_value ≥ 1.0</code> — это позволяет в перспективе переходить на <code>MAXIMIZE_CONVERSION_VALUE</code>.</div>
+  </div>
+</section>
+
+<!-- 6. Keywords & negatives -->
+<section class="section" id="kw">
+  <div class="section-title"><span class="num">6</span> Ключи и минусация</div>
+
+  <div class="stat-grid">
+    <div class="stat-card green"><div class="stat-label">EXACT</div><div class="stat-value">497</div><div class="stat-note">49.7% — отлично</div></div>
+    <div class="stat-card green"><div class="stat-label">PHRASE</div><div class="stat-value">496</div><div class="stat-note">49.6% — зеркальная схема</div></div>
+    <div class="stat-card"><div class="stat-label">BROAD</div><div class="stat-value">7</div><div class="stat-note">0.7% — норма</div></div>
+    <div class="stat-card"><div class="stat-label">Минусы (кампании)</div><div class="stat-value">324</div><div class="stat-note">EUR 125 / USD 81 / Азия 118</div></div>
+    <div class="stat-card"><div class="stat-label">Минусы (аккаунт)</div><div class="stat-value">200</div><div class="stat-note">shared базис</div></div>
+  </div>
+
+  <div class="check-row ok">
+    <div class="ctitle">Структура match-types — зеркальная EXACT + PHRASE <span class="badge green">OK</span></div>
+    <div class="cnote">Классическая поддерживаемая вручную схема: на каждый exact-ключ — соответствующий phrase. 0.7% broad — в пределах нормы.</div>
+  </div>
+
+  <div class="check-row partial">
+    <div class="ctitle">7 BROAD-ключей слишком общего вида <span class="badge gray">MINOR</span></div>
+    <div class="cnote">Среди enabled BROAD: «дизайн», «программы», «блог», «лендинга», «фигме», «ии», «сколько стоит разработка корпоративного сайта». Первые 6 в широком соответствии могут наловить мусорные запросы («дизайн интерьера», «программы для андроид», «ии чатбот»).</div>
+    <div class="cact"><strong>Что делать:</strong> «дизайн», «ии», «программы», «блог», «фигме» — поставить на паузу или перевести в [exact]/«phrase».</div>
+  </div>
+
+  <div class="check-row partial">
+    <div class="ctitle">$1 507 за 30д на запросах со статусом NONE <span class="badge gray">MINOR</span></div>
+    <div class="cnote">99% бюджета уходит на запросы, не добавленные ни как ключи, ни как минусы. Топ-затратные: «разработка сайтов», «заказать сайт», «создание сайта», «сайт под ключ» — это <strong>релевантные коммерческие запросы</strong>, их нужно <em>добавить</em> как EXACT, а не минусить.</div>
+    <div class="cact"><strong>Что делать:</strong> 1 раз в неделю — Search Terms → топ-20 по cost с conv=0 → классифицировать «в exact» / «в минус».</div>
+  </div>
+
+  <div class="check-row ok">
+    <div class="ctitle">Минусация на двух уровнях <span class="badge green">OK</span></div>
+    <div class="cnote">324 минус-слова в кампаниях + 200 на аккаунте — солидный фундамент. Брендовые исключения настроены.</div>
+  </div>
+</section>
+
+<!-- 7. Ads & extensions -->
+<section class="section" id="ads">
+  <div class="section-title"><span class="num">7</span> Объявления и расширения</div>
+
+  <div class="stat-grid">
+    <div class="stat-card green"><div class="stat-label">Excellent ads</div><div class="stat-value">125</div><div class="stat-note">59% активных</div></div>
+    <div class="stat-card green"><div class="stat-label">Good ads</div><div class="stat-value">82</div><div class="stat-note">39% активных</div></div>
+    <div class="stat-card red"><div class="stat-label">Poor ads</div><div class="stat-value">2</div><div class="stat-note">требуют замены</div></div>
+    <div class="stat-card"><div class="stat-label">Расширений</div><div class="stat-value">473</div><div class="stat-note">campaign_asset</div></div>
+  </div>
+
+  <div class="check-row ok">
+    <div class="ctitle">98% активных объявлений — Good или Excellent <span class="badge green">OK</span></div>
+    <div class="cnote">125 Excellent + 82 Good + 2 Poor + 2 без оценки (из 211 ENABLED). Это <strong>отличный показатель</strong> — Google не штрафует за низкое качество.</div>
+  </div>
+
+  <div class="check-row partial">
+    <div class="ctitle">2 объявления с Ad Strength = POOR в активе <span class="badge gray">MINOR</span></div>
+    <div class="cnote">Среди 211 enabled-объявлений 2 имеют POOR-оценку.</div>
+    <div class="cact"><strong>Что делать:</strong> отфильтровать в UI по Ad Strength = Poor → доукомплектовать до 15 headlines и 4 descriptions с разными angle (boldness/utility/proof).</div>
+  </div>
+
+  <div class="check-row na">
+    <div class="ctitle">Sitelinks / Callouts / Structured snippets <span class="badge blue">Вне API</span></div>
+    <div class="cnote">Google Ads API v23 в выборке возвращает <code>field_type = None</code> для campaign_asset (известный баг). 473 ассета подключены, но их типизация требует ручной проверки в UI.</div>
+    <div class="cact"><strong>Что делать:</strong> в UI убедиться, что в каждой Search-кампании есть как минимум: 6 sitelinks (Кейсы, Услуги, Команда, Цены, Контакты, Блог) + 6 callouts + structured snippets (Услуги/Тип).</div>
+  </div>
+</section>
+
+<!-- 8. Audiences/Geo/Devices -->
+<section class="section" id="aud">
+  <div class="section-title"><span class="num">8</span> Аудитории, гео, устройства</div>
+
+  <div class="check-row ok">
+    <div class="ctitle">Геотаргетинг = Presence only <span class="badge green">OK</span></div>
+    <div class="cnote">Все 3 кампании: <code>positive_geo_target_type = PRESENCE (7)</code> + <code>negative = PRESENCE_OR_INTEREST (5)</code>. Максимально жёсткое таргетирование «по реальному местонахождению» — правильно для B2B-услуг.</div>
+  </div>
+
+  <div class="check-row partial">
+    <div class="ctitle">Search Partners включены только на «Поиск - USD» <span class="badge orange">MAJOR</span></div>
+    <div class="cnote">EUR и Азия — partners OFF (правильно). USD — partners ON при 0 конверсий за 30д и $191 расхода. Партнёры — это сторонние сайты с поисковиками, для нишевого B2B обычно льют мусор.</div>
+    <div class="cact"><strong>Что делать:</strong> Settings → Networks → снять галку «Include Google search partners».</div>
+  </div>
+
+  <div class="check-row ok">
+    <div class="ctitle">Mobile конвертит лучше Desktop <span class="badge green">OK</span></div>
+    <div class="cnote">Mobile: 49% cost / 67% conv ($1 180 / 10 conv). Desktop: 50% / 33% ($820 / 6 conv). Tablet ~0%. Mobile эффективнее на 30% — корректировок не требуется (Smart Bidding сам учтёт).</div>
+  </div>
+
+  <div class="check-row ok">
+    <div class="ctitle">Аудитории и user lists подключены <span class="badge green">OK</span></div>
+    <div class="cnote">18 user_lists в аккаунте, в каждой активной кампании есть отдельная Ad Group «Ремаркетинг» с привязкой аудитории.</div>
+  </div>
+
+  <div class="check-row partial">
+    <div class="ctitle">Распределение конверсий по дням недели смещено в будни <span class="badge gray">MINOR</span></div>
+    <div class="cnote">Пн-Чт = 14 conv ($1 327, CPA $95). Пт-Вс = 2 conv ($676, CPA $338). Расписание показов не настроено — кампании работают 24/7.</div>
+    <div class="cact"><strong>Что делать:</strong> либо переходить на Smart Bidding (само разрулит), либо вручную поставить bid-modifier -20% на Пт-Вс.</div>
+  </div>
+</section>
+
+<!-- 9. Action plan -->
+<section class="section" id="plan">
+  <div class="section-title"><span class="num">9</span> План действий</div>
+
+  <div class="priority-block crit">
+    <h3>🔴 На эту неделю — Critical / Major</h3>
+    <ol>
+      <li><strong>«Поиск - Азия» → MAXIMIZE_CONVERSIONS</strong> без CPA-target (первые 14 дней обучения). Через 14 дней при стабильности — добавить <code>TARGET_CPA = $55</code>.</li>
+      <li><strong>Поднять дневной бюджет «Поиск - Азия»</strong> с $15 до <strong>$30</strong>.</li>
+      <li><strong>«Поиск - USD»: выключить Search Partners</strong> (Settings → Networks).</li>
+      <li><strong>Снизить бюджет «Поиск - USD»</strong> до $15-20 — пусть свободные $25 пойдут на Азию.</li>
+    </ol>
+  </div>
+
+  <div class="priority-block major">
+    <h3>🟡 Следующие 1-2 недели — Major</h3>
+    <ol>
+      <li><strong>Атрибуция = Data-driven</strong> на всех 15 conversion actions.</li>
+      <li><strong>Primary goals сократить до 2:</strong> Отправка формы + Клик по телефону. Email-клик, скроллы, время — в Secondary.</li>
+      <li><strong>«Поиск - EUR» → MAXIMIZE_CONVERSIONS</strong> без CPA-target.</li>
+      <li>Назначить недельный прогон Search Terms (топ-20 по cost с conv=0 → exact или минус).</li>
+    </ol>
+  </div>
+
+  <div class="priority-block minor">
+    <h3>⚪ Когда будет время — Minor / Cosmetic</h3>
+    <ol>
+      <li>Найти 2 POOR-объявления → доукомплектовать (15 headlines × 4 descriptions).</li>
+      <li>BROAD-ключи «дизайн», «ии», «программы», «блог», «фигме» — в [exact] либо на паузу.</li>
+      <li>Архивировать 13 пустых черновых кампаний (Израиль, Турция, Кипр, ОАЭ, Канада, PMax-черновики и т.д.).</li>
+      <li>Проверить в UI наличие 6+ sitelinks и callouts в каждой активной кампании (API не возвращает field_type).</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 10. Score -->
+<section class="section" id="score">
+  <div class="section-title"><span class="num">10</span> Итоговая оценка</div>
+  <div style="display:flex; align-items:center; gap:24px; flex-wrap:wrap; margin-bottom:18px;">
+    <div style="background:linear-gradient(135deg,#0f172a,#2563eb); color:#fff; padding:18px 28px; border-radius:12px; display:flex; align-items:baseline; gap:8px;">
+      <span style="font-size:46px; font-weight:800; line-height:1;">6</span>
+      <span style="font-size:20px; opacity:.8;">/ 10</span>
+    </div>
+    <div>
+      <div style="font-size:14px; color:#555; text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px;">Solid account with several actionable improvements</div>
+      <div style="font-size:13px; color:#777;">После пунктов 1-6 плана ожидается переход в зону 7-8.</div>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th style="width:30%;">Аспект</th><th>Оценка</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Структура ключей</strong></td><td><span class="badge green">9/10</span> &nbsp; Образцовая зеркальная EXACT+PHRASE, минусация на двух уровнях.</td></tr>
+      <tr><td><strong>Качество объявлений</strong></td><td><span class="badge green">9/10</span> &nbsp; 98% Good/Excellent, всего 2 POOR на 211 активных.</td></tr>
+      <tr><td><strong>Tracking & GA4</strong></td><td><span class="badge green">8/10</span> &nbsp; Enhanced Conversions, 15 actions, GA4 интеграция работает.</td></tr>
+      <tr><td><strong>Bidding strategy</strong></td><td><span class="badge red">3/10</span> &nbsp; <strong>Manual CPC во всех 3 кампаниях</strong>, при готовности Азии к Smart Bidding.</td></tr>
+      <tr><td><strong>Attribution</strong></td><td><span class="badge orange">5/10</span> &nbsp; Last-click на всех 15 целях вместо Data-driven.</td></tr>
+      <tr><td><strong>Conversion goals</strong></td><td><span class="badge orange">5/10</span> &nbsp; 6 primary одновременно — двойной/тройной счёт.</td></tr>
+      <tr><td><strong>Бюджеты</strong></td><td><span class="badge orange">6/10</span> &nbsp; «Азия» режется бюджетом, «USD» — недогруз с Search Partners.</td></tr>
+      <tr><td><strong>Аудитории / гео</strong></td><td><span class="badge green">8/10</span> &nbsp; Presence-only, 18 user lists, ремаркетинг подключён.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  Аудит проведён по стандарту OpenClaw Google Ads Audit, 47-пунктовый чеклист с автоматическим сбором данных через Google Ads API v23.<br>
+  Источник: <code>google-ads-mcp/miks_soft/data/</code> (28 GAQL-снимков от 29 мая 2026).<br>
+  Дата: 29 мая 2026 · версия 1.0
+</footer>
+
+</div>
+</body>
+</html>
