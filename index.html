@@ -264,8 +264,8 @@
 
   .plan-list { margin-top: 36px; }
   .plan-step {
-    display: grid; grid-template-columns: 60px 1fr auto;
-    gap: 24px; padding: 24px 0;
+    display: grid; grid-template-columns: 60px 1fr;
+    gap: 24px; padding: 26px 0;
     border-top: 1px solid rgba(255,255,255,0.12);
     align-items: start;
   }
@@ -278,17 +278,10 @@
     font-family: 'Fraunces', serif; font-weight: 600;
     font-size: 21px; color: #fff; margin-bottom: 6px; line-height: 1.3;
   }
-  .plan-step .pt p { color: #c8c0a8; font-size: 15px; line-height: 1.6; margin: 0; max-width: 540px; }
-  .plan-step .pmeta {
-    font-family: 'JetBrains Mono', monospace; font-size: 12px;
-    color: #f5a880; text-align: right; white-space: nowrap;
-    padding-top: 6px;
-  }
-  .plan-step .pmeta b { display: block; color: #fff; font-size: 14px; margin-bottom: 2px; font-weight: 600; }
+  .plan-step .pt p { color: #c8c0a8; font-size: 15px; line-height: 1.6; margin: 0; max-width: 600px; }
 
   @media (max-width: 640px) {
     .plan-step { grid-template-columns: 40px 1fr; gap: 16px; }
-    .plan-step .pmeta { grid-column: 1 / -1; text-align: left; padding-left: 56px; padding-top: 12px; }
   }
 
   /* ---- Forecast ---- */
@@ -326,6 +319,62 @@
     margin-top: 14px; margin-bottom: 6px;
   }
   .forecast-card p { font-size: 13.5px; color: var(--muted); line-height: 1.5; margin: 0; }
+
+  /* ---- Ongoing management ---- */
+  .ongoing {
+    padding: 90px 0;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+    position: relative;
+  }
+  .ongoing-grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: 40px; margin-top: 40px;
+  }
+  @media (min-width: 900px) {
+    .ongoing-grid { grid-template-columns: 1.2fr 1fr; gap: 56px; }
+  }
+  .ongoing-list {
+    display: flex; flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+  .ongoing-item {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    display: grid; grid-template-columns: 90px 1fr;
+    gap: 20px; align-items: baseline;
+  }
+  .ongoing-item .freq {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent); font-weight: 600;
+    padding-top: 4px;
+  }
+  .ongoing-item .what b { display: block; color: var(--ink); font-weight: 600; font-size: 16px; margin-bottom: 2px; }
+  .ongoing-item .what span { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+  .cta-card {
+    background: var(--ink); color: var(--bg);
+    padding: 36px 32px; border-radius: 14px;
+    align-self: start;
+  }
+  .cta-card .cta-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: #f5a880; font-weight: 600; margin-bottom: 16px;
+  }
+  .cta-card h4 {
+    font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 26px; line-height: 1.25; color: #fff;
+    margin-bottom: 16px; letter-spacing: -0.01em;
+  }
+  .cta-card h4 em { font-style: italic; color: #f5a880; font-weight: 500; }
+  .cta-card p { font-size: 15px; line-height: 1.65; color: #d4cdb8; margin: 0 0 14px; }
+  .cta-card p strong { color: #fff; font-weight: 600; }
+  .cta-card .sep {
+    height: 1px; background: rgba(255,255,255,0.15);
+    margin: 22px 0 18px;
+  }
+  .cta-card .quiet { font-size: 13px; color: #c8c0a8; line-height: 1.55; font-style: italic; }
 
   /* ---- Good stuff ---- */
   .good-stuff {
@@ -473,7 +522,7 @@
           «Поиск-Азия» уже накопила 10 конверсий за месяц — достаточно для запуска <span class="kbd">MAXIMIZE_CONVERSIONS</span>. Это самая критичная переключка.
         </div>
 
-        <p>«Поиск-Азия» — кампания, которую <strong>нужно переключить первой</strong>. У неё уже есть стабильный поток конверсий (10 за 30 дней при низкой волатильности правок), это значит — Google сможет обучить алгоритм. После 14 дней обучения добавляем целевой CPA = $55, и кампания начинает сама подбирать оптимальные клики.</p>
+        <p>«Поиск-Азия» — кампания, которую <strong>нужно переключить первой</strong>. У неё уже есть стабильный поток конверсий (10 за 30 дней при низкой волатильности правок), это значит — Google сможет обучить алгоритм. После периода обучения добавляем целевой CPA = $55, и кампания начинает сама подбирать оптимальные клики — но только при условии, что её на этом этапе не дёргают руками.</p>
       </div>
 
       <div class="visual">
@@ -670,9 +719,9 @@
 <div class="plan-block">
   <div class="wrap">
     <div class="eyebrow">План действий</div>
-    <h2 class="chapter-title">6 шагов, которые <em>вернут заявки</em> за 2–3 недели</h2>
+    <h2 class="chapter-title">6 шагов, которые <em>вернут заявки</em></h2>
     <p class="chapter-body" style="max-width:640px;">
-      Порядок важен: первые два шага дают эффект уже на этой неделе, остальные четыре — за 14–21 день обучения алгоритма. Делать всё сразу не нужно — Smart Bidding не любит резких изменений.
+      Порядок важен: первые два шага дают эффект почти сразу, остальные четыре — после обучения алгоритма. Делать всё сразу нельзя: Smart Bidding не любит резких изменений и сбрасывает обучение, если за неделю в кампании больше 2–3 значимых правок.
     </p>
 
     <div class="plan-list">
@@ -681,54 +730,48 @@
         <div class="pn">01</div>
         <div class="pt">
           <h4>Перевести «Поиск-Азия» на Maximize Conversions</h4>
-          <p>Самая критичная переключка. У кампании уже 10 конверсий — алгоритм обучится. Первые 14 дней — без целевого CPA, чтобы дать системе данные. После — выставить TARGET_CPA = $55.</p>
+          <p>Самая критичная переключка. У кампании уже 10 конверсий — алгоритм обучится. Первый период — без целевого CPA, чтобы дать системе набрать данные. После выхода из обучения — выставить TARGET_CPA = $55 и не трогать кампанию руками: каждая правка сбрасывает прогресс.</p>
         </div>
-        <div class="pmeta"><b>5 минут</b>эффект ч/з 14 дней</div>
       </div>
 
       <div class="plan-step">
         <div class="pn">02</div>
         <div class="pt">
           <h4>Поднять дневной бюджет «Поиск-Азия» с $15 до $30</h4>
-          <p>Снимаем потолок с самой эффективной кампании. Сверху освободится $15/день — берём их с «Поиск-USD», где бюджет недогружен.</p>
+          <p>Снимаем потолок с самой эффективной кампании. Сверху освободится $15/день — берём их с «Поиск-USD», где бюджет недогружен. Дальше нужно следить за ростом расхода: после Smart Bidding кампания может «съесть» и больше.</p>
         </div>
-        <div class="pmeta"><b>1 минута</b>эффект сразу</div>
       </div>
 
       <div class="plan-step">
         <div class="pn">03</div>
         <div class="pt">
           <h4>Выключить Search Partners в «Поиск-USD»</h4>
-          <p>Settings → Networks → снять галку. Освобождается $191/мес, которые сейчас уходят в никуда.</p>
+          <p>Settings → Networks → снять галку. Освобождается $191/мес, которые сейчас уходят в никуда. Единственный шаг, который даёт эффект моментально и без обучения.</p>
         </div>
-        <div class="pmeta"><b>30 секунд</b>эффект сразу</div>
       </div>
 
       <div class="plan-step">
         <div class="pn">04</div>
         <div class="pt">
           <h4>Сократить Primary-цели до двух</h4>
-          <p>Оставляем «Отправка формы для лидов» + «Клик по телефону». Остальные 4 — в Secondary. Это очищает сигнал для Smart Bidding и убирает «качели» в отчётах.</p>
+          <p>Оставляем «Отправка формы для лидов» + «Клик по телефону». Остальные 4 — в Secondary. Это очищает сигнал для Smart Bidding и убирает «качели» в отчётах. Заодно — пересмотреть тэги GA4, чтобы они тоже не дублировали лидов.</p>
         </div>
-        <div class="pmeta"><b>10 минут</b>эффект ч/з 7 дней</div>
       </div>
 
       <div class="plan-step">
         <div class="pn">05</div>
         <div class="pt">
           <h4>Сменить атрибуцию с Last-Click на Data-Driven</h4>
-          <p>В Tools → Conversions у всех 15 целей. Data-Driven распределяет заслугу между точками касания — Smart Bidding учится точнее, EUR-кампания получает справедливый кредит.</p>
+          <p>В Tools → Conversions у всех 15 целей. Data-Driven распределяет заслугу между точками касания — Smart Bidding учится точнее, EUR-кампания получает справедливый кредит. Дальше — наблюдать, как меняется картина в отчётах: первая неделя выглядит странно, это нормально.</p>
         </div>
-        <div class="pmeta"><b>10 минут</b>эффект ч/з 14 дней</div>
       </div>
 
       <div class="plan-step">
         <div class="pn">06</div>
         <div class="pt">
           <h4>Перевести «Поиск-EUR» на Maximize Conversions</h4>
-          <p>Только после шагов 4–5 (чистый сигнал) и через неделю-две после первой переключки на «Азии», когда увидим, что алгоритм работает.</p>
+          <p>Только после шагов 4–5 (чистый сигнал) и только когда «Поиск-Азия» уже стабильно отработала на новой стратегии. Запускать обучение на двух кампаниях одновременно — значит «утопить» обе: алгоритм будет драться сам с собой за конверсии.</p>
         </div>
-        <div class="pmeta"><b>5 минут</b>через 2 недели</div>
       </div>
 
     </div>
@@ -739,9 +782,9 @@
 <div class="forecast">
   <div class="wrap">
     <div class="chapter-num">— ПРОГНОЗ</div>
-    <h2 class="chapter-title">Чего <em>реально</em> ждать через месяц</h2>
+    <h2 class="chapter-title">Чего <em>реально</em> ждать после внедрения</h2>
     <p class="chapter-body" style="max-width:640px;">
-      Цифры ниже — консервативная оценка по аналогичным аккаунтам после такого набора правок. Это не гарантия, а рабочий ориентир: если за 3–4 недели результат сильно отличается — это сигнал, что что-то идёт не по плану и нужна корректировка.
+      Цифры ниже — консервативная оценка по аналогичным аккаунтам после такого набора правок и при условии регулярного контроля. Это не гарантия, а рабочий ориентир: если результат сильно отличается — значит, где-то нарушена последовательность шагов или алгоритму мешают руками, и нужна корректировка.
     </p>
 
     <div class="forecast-grid">
@@ -767,7 +810,7 @@
         <div class="from">18</div>
         <div class="to">26–32</div>
         <h5>+44 до +78%</h5>
-        <p>При том же бюджете $2 370/мес. Основной прирост — за счёт Азии и очистки сигнала.</p>
+        <p>При том же бюджете $2 370. Основной прирост — за счёт Азии и очистки сигнала.</p>
       </div>
 
       <div class="forecast-card">
@@ -775,12 +818,89 @@
         <div class="from">$191/мес</div>
         <div class="to">$0</div>
         <h5>−100%</h5>
-        <p>Выключение Search Partners в первый же день закрывает эту статью.</p>
+        <p>Выключение Search Partners закрывает эту статью полностью.</p>
       </div>
 
     </div>
   </div>
 </div>
+
+<!-- ─────────── ONGOING MANAGEMENT ─────────── -->
+<section class="ongoing">
+  <div class="wide">
+    <div class="chapter-num">— ВЕДЕНИЕ</div>
+    <h2 class="chapter-title">План выше — это не финал, <em>а точка отсчёта</em></h2>
+    <p class="chapter-body" style="max-width:640px;">
+      Шесть шагов закрывают сегодняшние потери. Но через 2–3 месяца Smart Bidding выйдет из обучения, придут новые конкуренты, изменится сезон, накопятся новые «глухие» запросы и поломанные плейсменты — и эффект начнёт утекать обратно. Google Ads без еженедельного контроля всегда деградирует, это не особенность вашего аккаунта, это устройство платформы.
+    </p>
+
+    <div class="ongoing-grid">
+
+      <div class="ongoing-list">
+        <div class="ongoing-item">
+          <div class="freq">еженедельно</div>
+          <div class="what">
+            <b>Search Terms review</b>
+            <span>Топ-20 запросов по тратам: горячие — в [exact], мусор — в минусы. Без этого NONE-расход возвращается за 2–3 недели.</span>
+          </div>
+        </div>
+        <div class="ongoing-item">
+          <div class="freq">еженедельно</div>
+          <div class="what">
+            <b>Контроль обучения Smart Bidding</b>
+            <span>Следим, чтобы кампания не выходила из learning phase. Если CPA скачет — корректируем цель, не дёргаем ставки.</span>
+          </div>
+        </div>
+        <div class="ongoing-item">
+          <div class="freq">2 раза/мес</div>
+          <div class="what">
+            <b>A/B-тесты RSA</b>
+            <span>Один заголовок-победитель не живёт вечно. Обновляем тексты, тестируем CTA, добавляем сезонные ассеты.</span>
+          </div>
+        </div>
+        <div class="ongoing-item">
+          <div class="freq">ежемесячно</div>
+          <div class="what">
+            <b>Перераспределение бюджетов</b>
+            <span>Какие кампании выросли по эффективности — туда деньги; которые просели — туда тесты, не бюджет.</span>
+          </div>
+        </div>
+        <div class="ongoing-item">
+          <div class="freq">ежемесячно</div>
+          <div class="what">
+            <b>Аудитории и ремаркетинг</b>
+            <span>Чистим устаревшие user lists, добавляем сегменты по новым лендингам, тестируем lookalike.</span>
+          </div>
+        </div>
+        <div class="ongoing-item">
+          <div class="freq">по событию</div>
+          <div class="what">
+            <b>Реакция на рынок</b>
+            <span>Запустили новую услугу — обновили ключи и тексты. Конкурент демпингует — пересмотрели стратегию ставок. Сезон — корректировка расписания.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-card">
+        <div class="cta-eyebrow">Если есть кому вести</div>
+        <h4>Аккаунт <em>в хороших руках</em> — оставляем как есть</h4>
+        <p>
+          Если в вашей команде уже есть человек, который занимается рекламой <strong>каждую неделю</strong> и готов взять шесть шагов выше, плюс регулярный список рядом — это лучший сценарий. Аккаунт переживал смену рынка и переживёт ещё.
+        </p>
+
+        <div class="sep"></div>
+
+        <div class="cta-eyebrow" style="color:#f5a880;">Если нет</div>
+        <h4 style="margin-top:6px;">Это <em>ровно то</em>, что мы делаем для клиентов</h4>
+        <p>
+          Каждую неделю — Search Terms, контроль обучения, отчёт по динамике. Каждый месяц — стратегическая сессия: куда переливать бюджет, что тестировать, какие гипотезы дают рост. Без дёрганий руками в кампаниях, которые сейчас обучаются.
+        </p>
+        <p class="quiet">Если интересно поговорить — контакты в подвале. Без обязательств, для начала просто разбор: куда мы бы повели аккаунт в первый месяц.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <!-- ─────────── WHAT'S GOOD ─────────── -->
 <section class="good-stuff">
@@ -846,8 +966,9 @@
     </div>
 
     <p class="signoff">
-      Заявки не «пропали» — они <em>перетекли</em> к конкурентам, которые быстрее адаптировались к Smart Bidding.
-      План выше возвращает аккаунт в современный рабочий режим за 2–3 недели.
+      Заявки не «пропали» — они <em>перетекли</em> к конкурентам, которые быстрее адаптировались к Smart Bidding
+      и держат руку на пульсе аккаунта каждую неделю. Шесть шагов выше возвращают аккаунт в современный рабочий режим;
+      регулярное ведение удерживает его там.
     </p>
   </div>
 </footer>
